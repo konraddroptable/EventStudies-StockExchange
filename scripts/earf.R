@@ -162,6 +162,9 @@ earf<-setModule("splitAnalysis",{
     p.CAR<-as.data.frame(t(data.frame(sapply(abnormalReturns[,-1], partitionedCAR, span=input.params$span))))
     colnames(p.CAR)<-partitionedCAR.Labels(days, span=input.params$span)
     
+    # cumulated abnormal returns day by day
+    car<-cumulatedAbnormalReturn(abnormalReturns=abnormalReturns, input.params$daysColumn)
+    
     # perform shapiro-wilk normality test
     swTests<-as.data.frame(t(sapply(p.CAR, shapiroWilkTest)))
     
@@ -181,6 +184,7 @@ earf<-setModule("splitAnalysis",{
                       marketLogReturns=marketLogReturns,
                       abnormalReturns=abnormalReturns,
                       cumulatedAbnormalReturns=p.CAR,
+                      cumulatedAbnormalReturnsByDay=car,
                       shapiroWilkTest=swTests,
                       corradoTest=corrado)
     
