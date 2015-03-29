@@ -32,9 +32,16 @@ View(calculations$shapiroWilkTest)
 View(calculations$corradoTest)
 
 ################################## Charts
-car.melt<-melt(sapply(calculations$cumulatedAbnormalReturns,sum))
-car.melt$variable<-as.factor(rownames(car.melt))
-
-ggplot(data=car.melt, aes(x=variable,y=value))+geom_bar(stat="identity")
+ggplot(data=data.frame(value=as.numeric(sapply(data.frame(value=t(calculations$cumulatedAbnormalReturnsByDay[,-1]),
+                                                          row.names=NULL),mean)),
+                       variable=as.factor(calculations$cumulatedAbnormalReturnsByDay[[1]]), row.names=NULL),
+       aes(x=variable,y=value))+
+  geom_bar(stat="identity", fill="#33B5E5")+
+  ggtitle("Skumulowane średnie zwyżkowe stopy zwrotu")+
+  xlab("Dni traksakcyjne")+ylab("Średnia skumulowana zwyżkowa stopa zwrotu")+
+  theme(plot.title = element_text(size = rel(2)),
+        axis.text.x = element_text(angle = 90, hjust = 1))
+  
+  
 
 
